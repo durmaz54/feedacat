@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/libdatachannel" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/libdatachannel/deps/json" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/libdatachannel/deps/libjuice" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/libdatachannel/deps/libsrtp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/libdatachannel/deps/plog" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/libdatachannel/deps/usrsctp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/paho.mqtt.cpp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/paho.mqtt.cpp/externals/paho-mqtt-c" vcs="Git" />
+  </component>
+</project>
