@@ -38,16 +38,30 @@ int main() {
         std::cout << "Gathering state: " << state << std::endl;
     });
 
-    std::shared_ptr<rtc::DataChannel> dc;
-    pc->onDataChannel([&dc](std::shared_ptr<rtc::DataChannel> incoming) {
-        dc = incoming;
-        dc->onMessage([](std::variant<rtc::binary, rtc::string> message) {
-            if (std::holds_alternative<rtc::string>(message)) {
-                std::cout << "Received: " << get<rtc::string>(message) << std::endl;
-            }
-        });
-    });
+    // std::shared_ptr<rtc::DataChannel> dc;
+    // pc->onDataChannel([&dc](std::shared_ptr<rtc::DataChannel> incoming) {
+    //     dc = incoming;
+    //     dc->onMessage([](std::variant<rtc::binary, rtc::string> message) {
+    //         if (std::holds_alternative<rtc::string>(message)) {
+    //             std::cout << "Received: " << get<rtc::string>(message) << std::endl;
+    //         }
+    //     });
+    // });
+    rtc::Description::Video media("video", rtc::Description::Direction::RecvOnly);
+    media.addH264Codec(96);
+    media.setBitrate(3000);
+    auto track = pc->addTrack(media);
 
+    auto session = std::make_shared<rtc::RtcpReceivingSession>();
+    track->setMediaHandler(session);
+
+    track->onMessage(
+        [](rtc::binary message) {
+            std::cout << "received message: " << message.size() << std::endl;
+    },nullptr);
+    // pc->setLocalDescription();
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
     while (pc->state() != rtc::PeerConnection::State::Connected) {
         if (p2pcomm.getAnswerSdp()) {
