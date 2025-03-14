@@ -1,0 +1,12 @@
+[submodule "libdatachannel"]
+	path = libdatachannel
+	url = https://github.com/paullouisageneau/libdatachannel.git
+[submodule "paho.mqtt.cpp"]
+	path = paho.mqtt.cpp
+	url = https://github.com/eclipse-paho/paho.mqtt.cpp.git
+[submodule "json"]
+	path = json
+	url = https://github.com/nlohmann/json.git
+[submodule "sdl"]
+	path = sdl
+	url = https://github.com/libsdl-org/SDL.git

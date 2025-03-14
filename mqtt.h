@@ -6,17 +6,19 @@
 #define MQTT_H
 #include "mqtt/client.h"
 #include <ctime>
-#include <oneapi/tbb/detail/_template_helpers.h>
 
-std::string random_string() {
+#define USE_SSL 1
+
+inline std::string random_string() {
     srand(static_cast<unsigned int>(time(0)));
-    auto value = rand();
     return std::to_string(rand());
 }
 
-static const std::string SERVER_ADDRESS = "ws://93.115.79.173:8083"; // WebSocket MQTT Broker Adresi
-static const int QOS = 2; // Tam olarak bir kez gönderilir. En az bir kez teslim alınır.
-static const long TIMEOUT = 500;
+static const std::string SERVER_ADDRESS = "wss://tb187608.ala.us-east-1.emqxsl.com:8084"; // WebSocket MQTT Broker Adresi
+static constexpr  int QOS = 2; // Tam olarak bir kez gönderilir. En az bir kez teslim alınır.
+static constexpr  long TIMEOUT = 5000;
+
+static const std::string CA_PATH = "/home/durmaz/Downloads/emqxsl-ca.crt";
 
 enum class PeerType {
     OFFER,
@@ -33,6 +35,13 @@ public:
 
     Peer2PeerCommunication() : m_client(SERVER_ADDRESS, random_string()),
                                m_sdp(std::nullopt), m_candidate(std::nullopt) {
+
+        m_ssl.set_trust_store(CA_PATH);
+
+        m_connOpts.set_user_name("samet");
+        m_connOpts.set_password("samet");
+        m_connOpts.set_ssl(m_ssl);
+        m_connOpts.set_clean_session(true);
     }
 
     void connect() {
@@ -78,6 +87,7 @@ public:
 private:
     mqtt::async_client m_client;
     mqtt::connect_options m_connOpts;
+    mqtt::ssl_options m_ssl;
     std::optional<std::string> m_sdp, m_candidate;
 };
 

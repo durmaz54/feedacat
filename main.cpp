@@ -8,6 +8,8 @@
 using std::cout;
 
 int main() {
+
+
     auto p2pcomm = Peer2PeerCommunication<PeerType::OFFER>();
     try {
         p2pcomm.connect();
@@ -44,7 +46,8 @@ int main() {
     while (pc->state() != rtc::PeerConnection::State::Connected) {
         if (my_sdp) {
             p2pcomm.sendSdp(std::string(my_sdp.value()));
-            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            std::cout << my_sdp.value() << '\n';
+            std::this_thread::sleep_for(std::chrono::seconds(5));
         }
         try {
             if (p2pcomm.getAnswerSdp()) {
