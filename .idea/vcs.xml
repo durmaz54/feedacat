@@ -11,6 +11,5 @@
     <mapping directory="$PROJECT_DIR$/libdatachannel/deps/usrsctp" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/paho.mqtt.cpp" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/paho.mqtt.cpp/externals/paho-mqtt-c" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/sdl" vcs="Git" />
   </component>
 </project>

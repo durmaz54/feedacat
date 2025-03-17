@@ -68,9 +68,18 @@ int main() {
         });
 
     std::atomic<rtc::PeerConnection::GatheringState> m_gathering_state;
-    pc->onGatheringStateChange([&m_gathering_state](rtc::PeerConnection::GatheringState state) {
+    pc->onGatheringStateChange([&m_gathering_state, &p2pcomm, &pc](rtc::PeerConnection::GatheringState state) {
         std::cout << "Gathering State: " << state << std::endl;
         m_gathering_state = state;
+                if (m_gathering_state == rtc::PeerConnection::GatheringState::Complete) {
+            auto description = pc->localDescription();
+            json message = {
+                {"type", description->typeString()},
+                {"sdp", std::string(description.value())}
+            };
+            std::cout << message << std::endl;
+            p2pcomm.sendSdp(to_string(message));
+        }
     });
 
     SOCKET sock = socket(AF_INET, SOCK_DGRAM, 0);
@@ -95,15 +104,7 @@ int main() {
     pc->setLocalDescription();
 
     while (m_state != rtc::PeerConnection::State::Connected) {
-        if (m_gathering_state == rtc::PeerConnection::GatheringState::Complete) {
-            auto description = pc->localDescription();
-            json message = {
-                {"type", description->typeString()},
-                {"sdp", std::string(description.value())}
-            };
-            std::cout << message << std::endl;
-            p2pcomm.sendSdp(to_string(message));
-        }
+
         if (p2pcomm.getAnswerSdp()) {
             json j = json::parse(p2pcomm.getAnswerSdp().value());
             rtc::Description answer(j["sdp"].get<std::string>(), j["type"].get<std::string>());
